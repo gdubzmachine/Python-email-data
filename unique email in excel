@@ -1,0 +1,19 @@
+import pandas as pd
+
+# Path to your Excel file
+file_path = r"C:\python\*.xlsx"
+
+# Load the Excel file (no headers)
+df = pd.read_excel(file_path, header=None)
+
+# Rename the column
+df.columns = ["Email"]
+
+# Drop duplicates (keep the first occurrence)
+unique_emails = df.drop_duplicates(subset="Email", keep="first")
+
+# Save back to the same file with a new sheet
+with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
+    unique_emails.to_excel(writer, sheet_name="UniqueEmails", index=False)
+
+
